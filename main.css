@@ -13,18 +13,18 @@ h1 {
   flex-direction: column;
 }
 
-#board{
+#board {
   border-collapse: collapse;
 }
 
-#board td{
+#board td {
   border: 1px solid #ddd;
   width: 18px;
   height: 18px;
 }
 
 td.alive {
-  background-color: #8CC8DD;
+  background-color: #8cc8dd;
 }
 
 #control_panel {
@@ -38,13 +38,21 @@ td.alive {
   font-size: 0.9em;
   text-align: center;
   background-color: #2ba6cb;
-  color: #fefefe; 
+  color: #fefefe;
 }
 
-.button:hover, .button:focus {
+.button:hover,
+.button:focus {
   background-color: #258dad;
 }
 
 .button:focus {
   outline: dashed 1px #2ba6cb;
+}
+
+.info {
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-size: 1em;
+  text-align: center;
 }

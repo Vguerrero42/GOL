@@ -1,20 +1,12 @@
-const width = 30;
-const height = 30;
-const limit = 3000;
-let iterations = 30; //actually the value - 1, subtracts 2 initially :(
-let started = false;
+const fs = require("fs");
+const { GameOfLife } = require("./GameOfLife");
+
+const width = 80;
+const height = 60;
+const limit = 1000;
 
 let initPop;
-let stateNum = (Number(localStorage.getItem("lastState")) || 0) + 1;
-
-if (stateNum > iterations) {
-  if (localStorage.getItem(`alldata${width}x${height}`)) {
-    alert("DATA FOR BOARD EXISTS");
-  } else {
-    stateNum = 1;
-  }
-}
-
+// let stateNum = (Number(localStorage.getItem("lastState")) || 0) + 1;
 // Create Game of Life instance
 // const control = JSON.parse(localStorage.getItem(`run15`));
 // const test = control.start;
@@ -23,7 +15,7 @@ const gol = new GameOfLife(width, height, limit);
 // Actual table cells
 const cells = [];
 
-const generations = document.getElementById("generations");
+const generations = document.getElementById("iterations");
 const cellsAlive = document.getElementById("cells_alive");
 
 let alive; // cells alive at each state
@@ -71,20 +63,16 @@ const paint = () => {
     lowestState = gol.currentState;
   }
 };
+
 //RESET POP NUMBER AFTER CLEAR
 let pop = () => {
-  let ratio = (1 / (width + height)) * 200;
-  let weight = ratio / ratio - 1;
-  if (ratio < 2) {
-    ratio = 2;
-  }
-  initPop = Math.round((width * height) / ratio + weight);
+  initPop = Math.round((width * height) / 2);
 };
 //GIVE INITPOP A VALUE
 pop();
 
-//Keep tracking of last 5 gens. to prevent infinite loop
-const trackLastFive = state => {
+//Keep tracking of last 3 gens. to prevent infinite loop
+const trackLastThree = state => {
   state = JSON.stringify(state);
   if (previous.includes(state)) {
     previous.forEach(e => {
@@ -95,7 +83,7 @@ const trackLastFive = state => {
     console.log("HIT", stagnateGen);
     run();
   }
-  if (previous.length < 5) {
+  if (previous.length < 3) {
     previous.push(state);
   } else {
     previous.shift();
@@ -115,9 +103,9 @@ const update = () => {
     lowest = alive;
     lowestState = gol.currentState;
   }
-  generations.innerHTML = `Generation : ${gol.currentState}`;
+  generations.innerHTML = gol.currentState;
   gol.cellsAlive = alive;
-  cellsAlive.innerHTML = `Population : ${alive}`;
+  cellsAlive.innerHTML = gol.cellsAlive;
 };
 
 //
@@ -126,7 +114,7 @@ const singleStep = () => {
     state: gol.currentState,
     alive
   });
-  trackLastFive(gol.board);
+  trackLastThree(gol.board);
   update();
   gol.tick();
   paint();
@@ -135,14 +123,14 @@ const singleStep = () => {
 const run = () => {
   if (!interval) {
     interval = setInterval(() => {
-      if (gol.currentState >= gol.limit || stagnateGen) {
+      if (gol.currentState >= gol.limit) {
         run();
       } else {
         allStates.push({
           state: gol.currentState,
           alive
         });
-        trackLastFive(gol.board);
+        trackLastThree(gol.board);
         update();
         gol.tick();
         paint();
@@ -152,50 +140,32 @@ const run = () => {
     clearInterval(interval);
     interval = null;
     if (gol.currentState === gol.limit || stagnateGen)
-      if (!localStorage.getItem(`run${stateNum}`)) {
+      if (truth) {
         let total = 0;
         allStates.forEach(state => {
           total += state.alive;
         });
         let average = total / allStates.length;
-
-        localStorage.setItem(
-          `run${stateNum}`,
-          JSON.stringify({
-            start: initial,
-            final: gol.board,
-            peak,
-            peakState,
-            lowest,
-            lowestState,
-            average,
-            allStates,
-            alive,
-            stagnateGen
-          })
-        );
-        localStorage.setItem("lastState", `${stateNum}`);
+        let obj = JSON.stringify({
+          start: initial,
+          final: gol.board,
+          peak,
+          peakState,
+          lowest,
+          lowestState,
+          average,
+          allStates,
+          alive,
+          stagnateGen,
+          height,
+          width
+        });
+        fs.appendFile("data.json", obj, err => {
+          if (err) throw err;
+          console.log("WROTE");
+        });
         stateNum++;
-        if (iterations > 0) {
-          iterations--;
-          console.log("RUNS:", iterations);
-          clear();
-          reset();
-          run();
-        } else {
-          let n = localStorage.getItem("lastState");
-          let alldata = [];
-          for (let i = 1; i < n; i++) {
-            let iteration = JSON.parse(localStorage.getItem(`run${i}`));
-            let gen = `iteration${i}`;
-            alldata.push({ [gen]: iteration });
-          }
-          // localStorage.setItem(
-          //   `alldata${height}x${width}`,
-          //   JSON.stringify(alldata)
-          // );
-          console.log(`alldata${height}x${width}:`, alldata);
-        }
+        console.log("NUM OF GENERATIONS", allStates.length);
       } else {
         alert("ADJUST FINAL STATENUM");
       }
@@ -242,7 +212,6 @@ const reset = () => {
     pop();
     // console.log(gol.board);
     initial = null;
-    started = false;
     // console.log(initial);
     allstates = [];
     reset();
@@ -262,12 +231,7 @@ document
   .getElementById("step_btn")
   .addEventListener("click", () => singleStep());
 
-document.getElementById("play_btn").addEventListener("click", () => {
-  if (!started) {
-    iterations--;
-  }
-  run();
-});
+document.getElementById("play_btn").addEventListener("click", () => run());
 
 // INITIALIZE RANDOM
 document.getElementById("reset_btn").addEventListener("click", () => reset());

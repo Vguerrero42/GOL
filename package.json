@@ -1,0 +1,36 @@
+{
+  "name": "Solution.GameOfLife",
+  "version": "1.0.0",
+  "description": "Fullstack Academy workshop.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-watch": "webpack -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FullstackAcademy/Solution.GameOfLife.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FullstackAcademy/Solution.GameOfLife/issues"
+  },
+  "homepage": "https://github.com/FullstackAcademy/Solution.GameOfLife#readme",
+  "dependencies": {
+    "brain.js": "^2.0.0-alpha.9",
+    "lodash": "^4.17.15",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "requirejs": "^2.3.6"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^10.0.0",
+    "chalk": "^3.0.0",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}

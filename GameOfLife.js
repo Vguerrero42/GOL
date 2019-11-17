@@ -1,13 +1,18 @@
 class GameOfLife {
-  constructor(width, height) {
+  constructor(width, height, limit = Infinity, initial) {
     this.width = width;
     this.height = height;
-    this.board = this.makeBoard();
+    this.currentState = 0;
+    this.board = initial || this.makeBoard();
+    this.limit = limit;
+    this.cellsAlive = 0;
   }
 
   makeBoard() {
     // Generate multi-dimensional array:
-    return new Array(this.height).fill().map(() => new Array(this.width).fill(0));
+    return new Array(this.height)
+      .fill()
+      .map(() => new Array(this.width).fill(0));
   }
 
   cellExists(row, col) {
@@ -35,6 +40,22 @@ class GameOfLife {
   forEachCell(iterator) {
     for (let row = 0; row < this.height; row++) {
       for (let col = 0; col < this.width; col++) {
+        iterator(row, col);
+      }
+    }
+  }
+
+  forEachCellNew(iterator) {
+    for (let row = 0; row < this.height / 2; row++) {
+      for (let col = 0; col < this.width; col++) {
+        iterator(row, col);
+      }
+    }
+  }
+
+  revForEachCell(iterator) {
+    for (let row = this.height - 1; row > this.height / 2; row--) {
+      for (let col = this.width - 1; col > 0; col--) {
         iterator(row, col);
       }
     }
@@ -72,14 +93,30 @@ class GameOfLife {
   }
 
   tick() {
-    const newBoard = this.makeBoard();
-
-    this.forEachCell((row, col) => {
-      const livingNeighbors = this.livingNeighbors(row, col);
-      const nextCell = this.conwayRule(this.getCell(row, col), livingNeighbors);
-      newBoard[row][col] = nextCell;
-    })
-    
-    this.board = newBoard;
+    if (this.currentState < this.limit) {
+      const newBoard = this.makeBoard();
+      this.forEachCell((row, col) => {
+        const livingNeighbors = this.livingNeighbors(row, col);
+        const nextCell = this.conwayRule(
+          this.getCell(row, col),
+          livingNeighbors
+        );
+        newBoard[row][col] = nextCell;
+      });
+      this.board = newBoard;
+      this.currentState++;
+    }
   }
+
+  // cellsAlive(){
+  // 	let alive = 0;
+  //   cells.forEach(cell => {
+  //     const cellValue = gol.getCell(td.dataset.row, td.dataset.col);
+  //     if (cellValue == 1) {
+  //       alive++;
+  //     }
+  //   });
+  // }
 }
+
+// module.exports = { GameOfLife };

@@ -1,32 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Game of Life - Fullstack Academy</title>
-  <link rel="stylesheet" href="main.css">
-  <script src="GameOfLife.js" defer></script>
-  <script src="main.js" defer></script>
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <title>Game of Life - Fullstack Academy</title>
+    <link rel="stylesheet" href="main.css" />
+    <script src="GameOfLife.js" defer></script>
+    <script src="bigbrayn.js" defer></script>
+    <script src="main.js" defer></script>
+  </head>
 
-<body>
-  <div id="container">
-    <h1>Game of Life</h1>
-    <table id='board'></table>
-    
-    <div id='control_panel'>
-      <button id='step_btn' class='button'>Step</button>
-      <button id='play_btn' class='button'>Play</button>
-      <button id='reset_btn' class='button'>Reset Random</button>
-      <button id='clear_btn' class='button'>Clear</button>
+  <body>
+    <script src="index.js" defer></script>
+    <div id="container">
+      <h1>Game of Life</h1>
+      <table id="board"></table>
+
+      <div id="control_panel">
+        <button id="step_btn" class="button">Step</button>
+        <button id="play_btn" class="button">Play</button>
+        <button id="reset_btn" class="button">Reset Random</button>
+        <button id="clear_btn" class="button">Clear</button>
+        <h2 id="generations" class="info">Generation</h2>
+        <h2 id="cells_alive" class="info">Population</h2>
+      </div>
+
+      <footer>
+        <p>
+          Built by [me] at
+          <a href="http://www.fullstackacademy.com/">Fullstack Academy</a>
+        </p>
+      </footer>
     </div>
-    
-    <footer>
-      <p>Built by [me] at <a href="http://www.fullstackacademy.com/">Fullstack Academy</a></p>
-    </footer>
-  </div>
-  
-  
-  
-</body>
+  </body>
 </html>
