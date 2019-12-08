@@ -3,7 +3,7 @@ const fs = require("fs");
 
 let data;
 
-fs.readFile("./data.txt", function read(err, stuff) {
+fs.readFileSync("./DATA/30x30data.js", function read(err, stuff) {
   if (err) console.error(err);
   else data = stuff;
 });

@@ -23,7 +23,8 @@
     "lodash": "^4.17.15",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
-    "requirejs": "^2.3.6"
+    "requirejs": "^2.3.6",
+    "webpack-dev-server": "^3.9.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

@@ -1,5 +1,5 @@
-const width = 30;
-const height = 30;
+const width = 25;
+const height = 25;
 const limit = 3000;
 let iterations = 30; //actually the value - 1, subtracts 2 initially :(
 let started = false;
@@ -273,3 +273,13 @@ document.getElementById("play_btn").addEventListener("click", () => {
 document.getElementById("reset_btn").addEventListener("click", () => reset());
 
 document.getElementById("clear_btn").addEventListener("click", () => clear());
+
+// document.getElementById("skip").addEventListener("click", () => {
+//   gol.currentState = limit;
+// });
+// document.getElementById("submit").addEventListener("click", () => {
+//   gol.height = document.getElementById("height").nodeValue;
+//   gol.width = document.getElementById("width").nodeValue;
+//   console.log(gol.height, gol.width);
+// });
+// ]

@@ -1,37 +1,37 @@
-// const brain = require("brain.js");
+// // const brain = require("brain.js");
 
-const trainingData = [];
-// n = number of sets of starting states and ending states
+// const trainingData = [];
+// // n = number of sets of starting states and ending states
 
-let n = localStorage.getItem("lastState");
+// let n = localStorage.getItem("lastState");
 
-const train = () => {
-  for (let i = 0; i < n; i++) {
-    let iteration = JSON.parse(localStorage.getItem(`run${n}`));
-    let {
-      firstState,
-      finalState,
-      alive,
-      height,
-      width,
-      average,
-      stagGen,
-      allStates
-    } = iteration;
-    let maxPossible = height * width;
-    // console.log(maxPossible / allStates.length);
-    // console.log(average);
+// const train = () => {
+//   for (let i = 0; i < n; i++) {
+//     let iteration = JSON.parse(localStorage.getItem(`run${n}`));
+//     let {
+//       firstState,
+//       finalState,
+//       alive,
+//       height,
+//       width,
+//       average,
+//       stagGen,
+//       allStates
+//     } = iteration;
+//     let maxPossible = height * width;
+//     // console.log(maxPossible / allStates.length);
+//     // console.log(average);
 
-    if (average > maxPossible / 4) {
-      trainingData.push({
-        input: [height, width],
-        output: firstState
-      });
-    }
-  }
-};
+//     if (average > maxPossible / 4) {
+//       trainingData.push({
+//         input: [height, width],
+//         output: firstState
+//       });
+//     }
+//   }
+// };
 
-train();
+// train();
 // console.log(trainingData);
 // let alldata = [];
 // for (let i = 0; i < n; i++) {
