@@ -51,6 +51,16 @@ for (let h = 0; h < height; h++) {
 }
 document.getElementById("board").append(table);
 
+const check = () =>{
+  if (alive > peak && gol.currentState !== 0) {
+    peak = alive;
+    peakState = gol.currentState;
+  }
+  if (alive < lowest) {
+    lowest = alive;
+    lowestState = gol.currentState;
+  }
+}
 const paint = () => {
   alive = 0;
   cells.forEach(td => {
@@ -62,14 +72,7 @@ const paint = () => {
       td.classList.remove("alive");
     }
   });
-  if (alive > peak && gol.currentState !== 0) {
-    peak = alive;
-    peakState = gol.currentState;
-  }
-  if (alive < lowest) {
-    lowest = alive;
-    lowestState = gol.currentState;
-  }
+  check()
 };
 //RESET POP NUMBER AFTER CLEAR
 let pop = () => {
@@ -83,8 +86,8 @@ let pop = () => {
 //GIVE INITPOP A VALUE
 pop();
 
-//Keep tracking of last 5 gens. to prevent infinite loop
-const trackLastFive = state => {
+//Keep tracking of last 10 gens. to prevent infinite loop
+const trackLastTen = state => {
   state = JSON.stringify(state);
   if (previous.includes(state)) {
     previous.forEach(e => {
@@ -95,7 +98,7 @@ const trackLastFive = state => {
     console.log("HIT", stagnateGen);
     run();
   }
-  if (previous.length < 5) {
+  if (previous.length < 10) {
     previous.push(state);
   } else {
     previous.shift();
@@ -107,14 +110,7 @@ let interval = null;
 
 //update data after every state
 const update = () => {
-  if (alive > peak && gol.currentState !== 0) {
-    peak = alive;
-    peakState = gol.currentState;
-  }
-  if (alive < lowest) {
-    lowest = alive;
-    lowestState = gol.currentState;
-  }
+  check()
   generations.innerHTML = `Generation : ${gol.currentState}`;
   gol.cellsAlive = alive;
   cellsAlive.innerHTML = `Population : ${alive}`;
@@ -126,7 +122,7 @@ const singleStep = () => {
     state: gol.currentState,
     alive
   });
-  trackLastFive(gol.board);
+  trackLastTen(gol.board);
   update();
   gol.tick();
   paint();
@@ -142,7 +138,7 @@ const run = () => {
           state: gol.currentState,
           alive
         });
-        trackLastFive(gol.board);
+        trackLastTen(gol.board);
         update();
         gol.tick();
         paint();
