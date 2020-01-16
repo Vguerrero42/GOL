@@ -143,7 +143,7 @@ const run = () => {
         gol.tick();
         paint();
       }
-    }, 10);
+    }, 50);
   } else {
     clearInterval(interval);
     interval = null;
